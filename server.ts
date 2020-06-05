@@ -1,3 +1,4 @@
+import './trello';
 import { moduleCollector } from "@cbto/rest-helper";
 import express from "express";
 
