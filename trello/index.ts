@@ -1,3 +1,4 @@
+import "./services";
 import { TaskController } from "./controllers/task.controller";
 import { module, BaseModule } from "@cbto/rest-helper";
 
