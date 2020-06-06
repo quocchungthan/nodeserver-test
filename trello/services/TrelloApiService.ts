@@ -90,7 +90,7 @@ export class TrelloApiService extends ITrelloApiService {
   }
 
   private getAllCardOfList(listId: string) {
-    const path = `https://api.trello.com/1/lists/${listId}?key=${this.trelloKey}&token=${this.trelloToken}`;
+    const path = `https://api.trello.com/1/lists/${listId}/cards?key=${this.trelloKey}&token=${this.trelloToken}`;
 
     return this.clientPromise(path, this.args);
   }
