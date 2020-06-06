@@ -10,8 +10,12 @@ export class TrelloApiService extends ITrelloApiService {
   trelloKey: string | undefined;
   trelloToken: string | undefined;
 
-  async getAllCardOnTODOList(): Promise<any[]> {
+  constructor() {
+    super();
     this.setTrelloConfig();
+  }
+
+  async getAllCardOnTODOList(): Promise<any[]> {
     const databaseBoard = await this.getDATABASEBoard();
 
     const listTodo = await this.getListToDoFromOfDatabase(databaseBoard.id);
@@ -20,7 +24,6 @@ export class TrelloApiService extends ITrelloApiService {
   }
 
   async moveTaskToDone(taskId: string): Promise<number> {
-    this.setTrelloConfig();
     try {
       const databaseBoard = await this.getDATABASEBoard();
       const list = await this.getListDoneFromOfDatabase(databaseBoard.id);
@@ -35,7 +38,6 @@ export class TrelloApiService extends ITrelloApiService {
   }
 
   async moveTaskToReject(taskId: string): Promise<number> {
-    this.setTrelloConfig();
     try {
       const databaseBoard = await this.getDATABASEBoard();
       const list = await this.getListBlockedFromOfDatabase(databaseBoard.id);
