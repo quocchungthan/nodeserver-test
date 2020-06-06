@@ -9,10 +9,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@cbto/rest-helper": "1.0.9"
+    "@cbto/data-helper": "1.0.1",
+    "@cbto/rest-helper": "1.0.10",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "@types/express": "4.17.6",
+    "@types/lodash": "^4.14.155",
     "express": "4.17.1",
     "typescript": "3.9.5"
   }
