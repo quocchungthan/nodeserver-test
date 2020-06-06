@@ -2,6 +2,7 @@ import TaskHistory from "../../characteristic/model/mongodb/TaskHistory";
 import { MongoService } from "@cbto/data-helper/dist/lib/mongodb/MongoService";
 import { IAbstractTaskHistoryService } from "../../characteristic/services/IAbstractTaskHistoryService";
 import { service } from "@cbto/rest-helper";
+import _ from "lodash";
 
 @service
 export class TaskHistoryMongoService extends IAbstractTaskHistoryService {
@@ -14,7 +15,7 @@ export class TaskHistoryMongoService extends IAbstractTaskHistoryService {
     );
   }
   public getInstancePrototypeName(): string {
-    return TaskHistory._collectionName;
+    return _.get(TaskHistory.prototype, "_collectionName");
   }
   public newInstance(): TaskHistory {
     return new TaskHistory();

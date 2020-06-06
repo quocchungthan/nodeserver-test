@@ -11,5 +11,9 @@
       "blocked": "BLOCKED",
       "done": "DONE"
     }
+  },
+  "mongo": {
+    "connectionString": "mongodb://nsot98er:nsot98er@ds263448.mlab.com:63448/chunbattu?useUnifiedTopology=true&retryWrites=false",
+    "dbname": "chunbattu"
   }
 }
