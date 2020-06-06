@@ -29,7 +29,7 @@ export class TrelloApiService extends ITrelloApiService {
 
       return 1;
     } catch (err) {
-      logError(JSON.stringify(err));
+      logDebug(JSON.stringify(err));
       return 0;
     }
   }
@@ -44,7 +44,7 @@ export class TrelloApiService extends ITrelloApiService {
 
       return 1;
     } catch (err) {
-      logError(JSON.stringify(err));
+      logDebug(JSON.stringify(err));
       return 0;
     }
   }
@@ -90,13 +90,13 @@ export class TrelloApiService extends ITrelloApiService {
   }
 
   private getAllCardOfList(listId: string) {
-    const path = `https://api.trello.com/1/lists/${listId}/cards?key=${this.trelloKey}&token=${this.trelloToken}`;
+    const path = `https://api.trello.com/1/lists/${listId}?key=${this.trelloKey}&token=${this.trelloToken}`;
 
     return this.clientPromise(path, this.args);
   }
 
   private updateListOfCard(cardId: string, idList: string) {
-    const path = `https://api.trello.com/1/cards/${cardId}/cards?key=${this.trelloKey}&token=${this.trelloToken}`;
+    const path = `https://api.trello.com/1/cards/${cardId}?key=${this.trelloKey}&token=${this.trelloToken}`;
 
     return this.clientPutPromise(path, this.args, { idList });
   }
