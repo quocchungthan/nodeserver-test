@@ -4,7 +4,7 @@ import { Task } from "../characteristic/model/Task";
 import _ from "lodash";
 import { ITrelloApiService } from "../characteristic/services/ITrelloApiSerivce";
 import { IAbstractTaskHistoryService } from "../characteristic/services/IAbstractTaskHistoryService";
-import TaskHistory from "./mongo-layer/models/TaskHistory";
+import TaskHistory from "../characteristic/model/mongodb/TaskHistory";
 
 @service
 export class TaskService extends ITaskHistoryService {

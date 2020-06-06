@@ -1,6 +1,6 @@
-import TaskHistory from "../models/TaskHistory";
+import TaskHistory from "../../characteristic/model/mongodb/TaskHistory";
 import { MongoService } from "@cbto/data-helper/dist/lib/mongodb/MongoService";
-import { IAbstractTaskHistoryService } from "../../../characteristic/services/IAbstractTaskHistoryService";
+import { IAbstractTaskHistoryService } from "../../characteristic/services/IAbstractTaskHistoryService";
 import { service } from "@cbto/rest-helper";
 
 @service
