@@ -3,6 +3,7 @@ import {
   moduleCollector,
   useJsonConfig,
   loadJsonConfig,
+  logDebug,
 } from "@cbto/rest-helper";
 import express from "express";
 import bodyParser from "body-parser";
@@ -37,4 +38,7 @@ loadJsonConfig("default")
         console.log(err);
       }
     });
+  })
+  .catch((err) => {
+    logDebug(JSON.stringify(err));
   });
