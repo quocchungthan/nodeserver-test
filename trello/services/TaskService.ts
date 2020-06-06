@@ -8,10 +8,18 @@ import TaskHistory from "./mongo-layer/models/TaskHistory";
 
 @service
 export class TaskService extends ITaskHistoryService {
-  getAllTask(): Promise<Task[]> {
+  async getAllTask(): Promise<Task[]> {
     const trelloService = useService<ITrelloApiService>(ITrelloApiService);
+    const listTask = await trelloService.getAllCardOnTODOList();
 
-    return trelloService.getAllCardOnTODOList();
+    return listTask.map((item) => {
+      const task = new Task();
+
+      item._id = item.id;
+      task.assign(item);
+
+      return task;
+    });
   }
 
   async updateTaskState(

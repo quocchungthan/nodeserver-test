@@ -1,3 +1,15 @@
 {
-  "port": 2002
+  "port": 2002,
+  "trello": {
+    "key": "a87b8ebaef5c1903b5272c4ba3d74a77",
+    "authToken": "e43b0d1616188faa11fa059973ee24f49bb817ac20eb64094343fd1dec1e4ac0",
+    "names": {
+      "database": "DATABASE",
+      "todo": "TO-DO",
+      "planning": "PLANNING",
+      "toplan": "TO-PLAN",
+      "blocked": "BLOCKED",
+      "done": "DONE"
+    }
+  }
 }
