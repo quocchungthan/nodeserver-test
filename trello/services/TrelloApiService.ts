@@ -6,31 +6,17 @@ import _ from "lodash";
 
 @service
 export class TrelloApiService extends ITrelloApiService {
+  args: { headers: any } | undefined;
+  trelloKey: string | undefined;
+  trelloToken: string | undefined;
+
   async getAllCardOnTODOList(): Promise<any[]> {
-    const headers: any = {
-      "Content-Type": "application/json",
-    };
-    // headers.Authorization = `Bearer ${accessToken}`;
-    const args = {
-      headers,
-    };
-    const trelloKey = useJsonConfig("trello.key");
-    const trelloToken = useJsonConfig("trello.authToken");
+    this.setTrelloConfig();
+    const databaseBoard = await this.getDATABASEBoard();
 
-    const databaseBoard = await this.getDATABASEBoard(
-      trelloKey,
-      trelloToken,
-      args
-    );
+    const listTodo = await this.getListToDoFromOfDatabase(databaseBoard.id);
 
-    const listTodo = await this.getListToDoFromOfDatabase(
-      databaseBoard.id,
-      trelloKey,
-      trelloToken,
-      args
-    );
-
-    return this.getAllCardOfList(listTodo.id, trelloKey, trelloToken, args);
+    return this.getAllCardOfList(listTodo.id);
   }
 
   moveTaskToDone(taskId: string): Promise<number> {
@@ -41,44 +27,30 @@ export class TrelloApiService extends ITrelloApiService {
     throw new Error("Method not implemented.");
   }
 
-  private async getDATABASEBoard(
-    trelloKey: string,
-    trelloToken: string,
-    args: any
-  ): Promise<any> {
-    const path = `https://api.trello.com/1/members/me/boards?key=${trelloKey}&token=${trelloToken}`;
+  private async getDATABASEBoard(): Promise<any> {
+    const path = `https://api.trello.com/1/members/me/boards?key=${this.trelloKey}&token=${this.trelloToken}`;
 
-    const data = await this.clientPromise(path, args);
+    const data = await this.clientPromise(path, this.args);
 
     return _.find(data as any[], (i) =>
       (i.name as string).startsWith(useJsonConfig("trello.names.database"))
     );
   }
 
-  private async getListToDoFromOfDatabase(
-    boardId: string,
-    trelloKey: string,
-    trelloToken: string,
-    args: any
-  ) {
-    const path = `https://api.trello.com/1/boards/${boardId}/lists?key=${trelloKey}&token=${trelloToken}`;
+  private async getListToDoFromOfDatabase(boardId: string) {
+    const path = `https://api.trello.com/1/boards/${boardId}/lists?key=${this.trelloKey}&token=${this.trelloToken}`;
 
-    const data = await this.clientPromise(path, args);
+    const data = await this.clientPromise(path, this.args);
 
     return _.find(data as any[], (i) =>
       (i.name as string).startsWith(useJsonConfig("trello.names.todo"))
     );
   }
 
-  private getAllCardOfList(
-    listId: string,
-    trelloKey: string,
-    trelloToken: string,
-    args: any
-  ) {
-    const path = `https://api.trello.com/1/lists/${listId}/cards?key=${trelloKey}&token=${trelloToken}`;
+  private getAllCardOfList(listId: string) {
+    const path = `https://api.trello.com/1/lists/${listId}/cards?key=${this.trelloKey}&token=${this.trelloToken}`;
 
-    return this.clientPromise(path, args);
+    return this.clientPromise(path, this.args);
   }
 
   private async clientPromise(path: string, args: any): Promise<any> {
@@ -100,5 +72,17 @@ export class TrelloApiService extends ITrelloApiService {
         }
       );
     });
+  }
+
+  private setTrelloConfig() {
+    const headers: any = {
+      "Content-Type": "application/json",
+    };
+    // headers.Authorization = `Bearer ${accessToken}`;
+    this.args = {
+      headers,
+    };
+    this.trelloKey = useJsonConfig("trello.key");
+    this.trelloToken = useJsonConfig("trello.authToken");
   }
 }
