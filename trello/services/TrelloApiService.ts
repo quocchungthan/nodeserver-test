@@ -14,7 +14,11 @@ export class TrelloApiService extends ITrelloApiService {
     this.setTrelloConfig();
     const databaseBoard = await this.getDATABASEBoard();
 
+    console.log(databaseBoard.id);
+
     const listTodo = await this.getListToDoFromOfDatabase(databaseBoard.id);
+
+    console.log(listTodo.id);
 
     return this.getAllCardOfList(listTodo.id);
   }

@@ -12,6 +12,9 @@ export class TaskService extends ITaskHistoryService {
     const trelloService = useService<ITrelloApiService>(ITrelloApiService);
     const listTask = await trelloService.getAllCardOnTODOList();
 
+    console.log(trelloService);
+    console.log(listTask);
+
     return listTask.map((item) => {
       const task = new Task();
 
