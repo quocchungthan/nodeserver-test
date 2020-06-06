@@ -33,7 +33,7 @@ loadJsonConfig("default")
   .then(() => {
     const port = +(useJsonConfig("port") || process.env.PORT);
     // start your server with custom port
-    app.listen(port, (err) => {
+    app.listen(port, "localhost", (err) => {
       if (err) {
         console.log(err);
       }
