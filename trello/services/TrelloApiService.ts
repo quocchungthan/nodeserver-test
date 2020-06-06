@@ -1,5 +1,5 @@
 import { ITrelloApiService } from "../characteristic/services/ITrelloApiSerivce";
-import { service, logDebug, useJsonConfig } from "@cbto/rest-helper";
+import { service, logDebug, useJsonConfig, logError } from "@cbto/rest-helper";
 // @ts-ignore
 import { Client as ClientObject } from "node-rest-client";
 import _ from "lodash";
@@ -19,12 +19,34 @@ export class TrelloApiService extends ITrelloApiService {
     return this.getAllCardOfList(listTodo.id);
   }
 
-  moveTaskToDone(taskId: string): Promise<number> {
-    throw new Error("Method not implemented.");
+  async moveTaskToDone(taskId: string): Promise<number> {
+    this.setTrelloConfig();
+    try {
+      const databaseBoard = await this.getDATABASEBoard();
+      const list = await this.getListDoneFromOfDatabase(databaseBoard.id);
+
+      await this.updateListOfCard(taskId, list.id);
+
+      return 1;
+    } catch (err) {
+      logError(JSON.stringify(err));
+      return 0;
+    }
   }
 
-  moveTaskToReject(taskId: string): Promise<number> {
-    throw new Error("Method not implemented.");
+  async moveTaskToReject(taskId: string): Promise<number> {
+    this.setTrelloConfig();
+    try {
+      const databaseBoard = await this.getDATABASEBoard();
+      const list = await this.getListBlockedFromOfDatabase(databaseBoard.id);
+
+      await this.updateListOfCard(taskId, list.id);
+
+      return 1;
+    } catch (err) {
+      logError(JSON.stringify(err));
+      return 0;
+    }
   }
 
   private async getDATABASEBoard(): Promise<any> {
@@ -47,10 +69,61 @@ export class TrelloApiService extends ITrelloApiService {
     );
   }
 
+  private async getListDoneFromOfDatabase(boardId: string) {
+    const path = `https://api.trello.com/1/boards/${boardId}/lists?key=${this.trelloKey}&token=${this.trelloToken}`;
+
+    const data = await this.clientPromise(path, this.args);
+
+    return _.find(data as any[], (i) =>
+      (i.name as string).startsWith(useJsonConfig("trello.names.done"))
+    );
+  }
+
+  private async getListBlockedFromOfDatabase(boardId: string) {
+    const path = `https://api.trello.com/1/boards/${boardId}/lists?key=${this.trelloKey}&token=${this.trelloToken}`;
+
+    const data = await this.clientPromise(path, this.args);
+
+    return _.find(data as any[], (i) =>
+      (i.name as string).startsWith(useJsonConfig("trello.names.blocked"))
+    );
+  }
+
   private getAllCardOfList(listId: string) {
     const path = `https://api.trello.com/1/lists/${listId}/cards?key=${this.trelloKey}&token=${this.trelloToken}`;
 
     return this.clientPromise(path, this.args);
+  }
+
+  private updateListOfCard(cardId: string, idList: string) {
+    const path = `https://api.trello.com/1/cards/${cardId}/cards?key=${this.trelloKey}&token=${this.trelloToken}`;
+
+    return this.clientPutPromise(path, this.args, { idList });
+  }
+
+  private clientPutPromise(
+    path: string,
+    args: any,
+    data: object
+  ): Promise<any> {
+    const client = new ClientObject();
+
+    return new Promise<any>((resolve, reject) => {
+      client.put(
+        path,
+        { ...args, data },
+        async (data: string | any[] | PromiseLike<any[]> | undefined) => {
+          if (Buffer.isBuffer(data)) {
+            data = data.toString("utf8");
+            reject(data);
+          } else if (data?.hasOwnProperty("error")) {
+            reject(data);
+          } else {
+            resolve(data);
+          }
+        }
+      );
+    });
   }
 
   private async clientPromise(path: string, args: any): Promise<any> {
