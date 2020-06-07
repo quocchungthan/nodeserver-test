@@ -1,10 +1,9 @@
 import "./trello";
+import { moduleCollector, logDebug } from "@cbto/rest-helper";
 import {
-  moduleCollector,
   useJsonConfig,
   loadJsonConfig,
-  logDebug,
-} from "@cbto/rest-helper";
+} from "@cbto/rest-helper/dist/lib/util/Configuration";
 import express from "express";
 import bodyParser from "body-parser";
 import { mongoHelper } from "@cbto/data-helper";
@@ -33,7 +32,7 @@ loadJsonConfig("default")
   .then(() => {
     const port = +(useJsonConfig("port") || process.env.PORT);
     // start your server with custom port
-    app.listen(port, "localhost", (err) => {
+    app.listen(port, (err) => {
       if (err) {
         console.log(err);
       }

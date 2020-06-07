@@ -1,5 +1,9 @@
 import { ITrelloApiService } from "../characteristic/services/ITrelloApiSerivce";
-import { service, logDebug, useJsonConfig, logError } from "@cbto/rest-helper";
+import { service, logDebug, logError } from "@cbto/rest-helper";
+import {
+  useJsonConfig,
+  loadJsonConfig,
+} from "@cbto/rest-helper/dist/lib/util/Configuration";
 // @ts-ignore
 import { Client as ClientObject } from "node-rest-client";
 import _ from "lodash";
