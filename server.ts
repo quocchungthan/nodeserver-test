@@ -1,3 +1,4 @@
+import './auth0'
 import "./trello";
 import { moduleCollector, logDebug } from "@cbto/rest-helper";
 import {
@@ -19,6 +20,7 @@ app.use(bodyParser.json());
 
 // register routes
 moduleCollector.getRegisteredModule().forEach((module) => {
+  module.applyMiddlewares(app);
   module.registerEndpoints(app);
 });
 

@@ -4,7 +4,7 @@ import { IUserFromAccessToken } from "../characteristic/model/IUserFromAccessTok
 import { useJsonConfig } from "@cbto/rest-helper/dist/lib/util/Configuration";
 
 @service
-export class Auth0Service extends IAuth0ApiService {
+export class Auth0ApiService extends IAuth0ApiService {
   getUserFromAccessToken(accessToken: string): Promise<IUserFromAccessToken> {
     return new Promise<any>((resolve, reject) => {
       const clientObject = require("node-rest-client").Client;
