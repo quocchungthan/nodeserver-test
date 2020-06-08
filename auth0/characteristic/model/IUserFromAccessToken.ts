@@ -5,6 +5,7 @@ export interface IUserFromAccessToken {
   name: string;
   picture: string;
   locale: string;
+  email: string;
   updated_at: string;
   sub: string;
 }
