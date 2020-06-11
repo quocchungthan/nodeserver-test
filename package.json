@@ -2,19 +2,21 @@
   "name": "nodeserver",
   "version": "1.0.1",
   "description": "",
-  "main": "server.ts",
+  "main": "dist/server.js",
   "engines": {
     "node": "12.15.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node_modules/.bin/ts-node server"
+    "dev": "nodemon --watch '**/*.ts' --ignore 'src/**/*.spec.ts' --exec npm start",
+    "start": "tsc --build && cp default.json dist/default.json && node dist/server"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@cbto/data-helper": "^1.0.4",
     "@cbto/rest-helper": "^1.1.12",
+    "@types/mongodb": "^3.5.20",
     "lodash": "^4.17.15",
     "loglevel": "^1.6.8",
     "node-color-log": "^3.0.2",
