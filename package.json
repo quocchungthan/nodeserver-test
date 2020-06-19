@@ -1,5 +1,5 @@
 {
-  "name": "nodeserver",
+  "name": "maze-of-satisfaction",
   "version": "1.0.1",
   "description": "",
   "main": "dist/server.js",
