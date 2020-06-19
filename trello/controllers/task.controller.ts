@@ -7,6 +7,8 @@ import {
 } from "@cbto/rest-helper";
 import { Task } from "../characteristic/model/Task";
 import { ITaskHistoryService } from "../characteristic/services/ITaskHistoryService";
+import { ITaskService } from "../characteristic/services/ITaskService";
+import { SubmissionItem } from "../characteristic/model/SubmissionItem";
 
 export class TaskController extends BaseController {
   @restGet("/trello/tasks")
@@ -25,6 +27,16 @@ export class TaskController extends BaseController {
       "DONE",
       body.reasons
     );
+  }
+
+  @restGet("/trello/reasons")
+  public getRejectionReasons(): Promise<SubmissionItem[]> {
+    return useService<ITaskService>(ITaskService).getRejectionReasons();
+  }
+
+  @restGet("/trello/conclusions")
+  public getConclusions(taskId: string, body: any): Promise<SubmissionItem[]> {
+    return useService<ITaskService>(ITaskService).getConclusions();
   }
 
   @restPost("/trello/tasks/:taskId/reject")

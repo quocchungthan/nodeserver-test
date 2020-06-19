@@ -1,52 +1,40 @@
-import { ITaskHistoryService } from "../characteristic/services/ITaskHistoryService";
 import { service, useService } from "@cbto/rest-helper";
-import { Task } from "../characteristic/model/Task";
-import _ from "lodash";
+import { ITaskService } from "../characteristic/services/ITaskService";
+import { SubmissionItem } from "../characteristic/model/SubmissionItem";
 import { ITrelloApiService } from "../characteristic/services/ITrelloApiSerivce";
-import { IAbstractTaskHistoryService } from "../characteristic/services/IAbstractTaskHistoryService";
-import TaskHistory from "../characteristic/model/mongodb/TaskHistory";
 
 @service
-export class TaskService extends ITaskHistoryService {
-  async getAllTask(): Promise<Task[]> {
-    const trelloService = useService<ITrelloApiService>(ITrelloApiService);
-    const listTask = await trelloService.getAllCardOnTODOList();
+export class TaskService extends ITaskService {
+    async getRejectionReasons(): Promise<SubmissionItem[]> {
+        const trelloService = useService<ITrelloApiService>(ITrelloApiService);
+        const list = await trelloService.getAllCardOnReasonsList();
 
-    return listTask.map((item) => {
-      const task = new Task();
+        return list.map((item) => {
+            const x = new SubmissionItem();
 
-      item._id = item.id;
-      task.assign(item);
+            item._id = item.id;
+            item.label = item.name;
 
-      return task;
-    });
-  }
+            x.assign(item);
 
-  async updateTaskState(
-    id: string,
-    state: "BLOCKED" | "DONE",
-    reasonIds: string[]
-  ): Promise<number> {
-    const trelloService = useService<ITrelloApiService>(ITrelloApiService);
-    const taskHistory = useService<IAbstractTaskHistoryService>(
-      IAbstractTaskHistoryService
-    );
-    const data = new TaskHistory();
-
-    data.taskId = id;
-    data.newState = state;
-    data.reasonIds = reasonIds;
-
-    if (state === "DONE") {
-      await taskHistory.store(data);
-      return await trelloService.moveTaskToDone(id);
+            return x;
+        });
     }
 
-    if (state === "BLOCKED") {
-      await taskHistory.store(data);
-      return await trelloService.moveTaskToReject(id);
+    async getConclusions(): Promise<SubmissionItem[]> {
+        const trelloService = useService<ITrelloApiService>(ITrelloApiService);
+        const list = await trelloService.getAllCardOnConclusionsList();
+
+        return list.map((item) => {
+            const x = new SubmissionItem();
+
+            item._id = item.id;
+            item.label = item.name;
+
+            x.assign(item);
+
+            return x;
+        });
     }
 
-    return 0;
-  }
 }

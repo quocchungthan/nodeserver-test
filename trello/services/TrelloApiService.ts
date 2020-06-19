@@ -23,6 +23,24 @@ export class TrelloApiService extends ITrelloApiService {
     return this.getAllCardOfList(listTodo.id);
   }
 
+  async getAllCardOnConclusionsList(): Promise<any[]> {
+    this.setTrelloConfig();
+    const databaseBoard = await this.getDATABASEBoard();
+
+    const listTodo = await this.getListConclusionsFromOfDatabase(databaseBoard.id);
+
+    return this.getAllCardOfList(listTodo.id);
+  }
+
+  async getAllCardOnReasonsList(): Promise<any[]> {
+    this.setTrelloConfig();
+    const databaseBoard = await this.getDATABASEBoard();
+
+    const listTodo = await this.getListReasonsFromOfDatabase(databaseBoard.id);
+
+    return this.getAllCardOfList(listTodo.id);
+  }
+
   async moveTaskToDone(taskId: string): Promise<number> {
     this.setTrelloConfig();
     try {
@@ -70,6 +88,26 @@ export class TrelloApiService extends ITrelloApiService {
 
     return _.find(data as any[], (i) =>
       (i.name as string).startsWith(useJsonConfig("trello.names.todo"))
+    );
+  }
+
+  private async getListReasonsFromOfDatabase(boardId: string) {
+    const path = `https://api.trello.com/1/boards/${boardId}/lists?key=${this.trelloKey}&token=${this.trelloToken}`;
+
+    const data = await this.clientPromise(path, this.args);
+
+    return _.find(data as any[], (i) =>
+      (i.name as string).startsWith(useJsonConfig("trello.names.reasons"))
+    );
+  }
+
+  private async getListConclusionsFromOfDatabase(boardId: string) {
+    const path = `https://api.trello.com/1/boards/${boardId}/lists?key=${this.trelloKey}&token=${this.trelloToken}`;
+
+    const data = await this.clientPromise(path, this.args);
+
+    return _.find(data as any[], (i) =>
+      (i.name as string).startsWith(useJsonConfig("trello.names.conclusions"))
     );
   }
 

@@ -1,3 +1,3 @@
 export { TaskHistoryMongoService } from "./mongo-layer/TaskHistoryMongoService";
-export { TaskService } from "./TaskService";
+export { TaskHistoryService } from "./TaskHistoryService";
 export { TrelloApiService } from "./TrelloApiService";

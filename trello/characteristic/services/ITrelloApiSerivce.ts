@@ -6,4 +6,8 @@ export abstract class ITrelloApiService extends IService {
   abstract moveTaskToDone(taskId: string): Promise<number>;
 
   abstract moveTaskToReject(taskId: string): Promise<number>;
+
+  abstract getAllCardOnConclusionsList(): Promise<any[]>;
+
+  abstract getAllCardOnReasonsList(): Promise<any[]>;
 }
