@@ -16,6 +16,7 @@ export class TaskHistoryService extends ITaskHistoryService {
       const task = new Task();
 
       item._id = item.id;
+      item.description = item.desc;
       task.assign(item);
 
       return task;
