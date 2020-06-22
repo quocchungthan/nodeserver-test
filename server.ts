@@ -1,4 +1,5 @@
 import './auth0'
+import './user-data';
 import "./trello";
 import { moduleCollector, logDebug } from "@cbto/rest-helper";
 import {
