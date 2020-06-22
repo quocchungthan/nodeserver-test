@@ -4,4 +4,5 @@ export interface IStoreLocationBody extends IIncludingUserInfo {
     longitude: number;
     latitude: number;
     timestamp: number;
+    tz: number;
 }

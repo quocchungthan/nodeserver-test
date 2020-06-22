@@ -14,6 +14,7 @@ export class LocationService extends ILocationService {
         dataSave.longitude = data.longitude;
         dataSave.timestamp = data.latitude;
         dataSave.latitude = data.timestamp;
+        dataSave.tz = data.tz;
 
         return (await userLocation.store(dataSave)) ? 1 : 0;
     }

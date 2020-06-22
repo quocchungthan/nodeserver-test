@@ -11,9 +11,15 @@ export default class UserLocation extends BaseModel {
 
     public latitude: number | undefined;
 
+    public tz: number | undefined;
+
 
     public assign(obj: any) {
         super.assign(obj);
+
+        if (obj.hasOwnProperty("tz")) {
+            this.tz = obj.tz;
+        }
 
         if (obj.hasOwnProperty("userId")) {
             this.userId = obj.userId;
