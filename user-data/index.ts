@@ -1,3 +1,4 @@
+import './services';
 import { IModule, module, BaseModule, BaseController } from "@cbto/rest-helper";
 import { LocationController } from "./controllers/LocationController";
 
